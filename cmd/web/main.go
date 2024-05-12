@@ -4,12 +4,15 @@ import (
 	"database/sql"
 	"flag"
 	"html/template"
+
 	// use the blank identifier for an import that does not get used
-	"chandler.letsgo/internal/models"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
 	"os"
+
+	"chandler.letsgo/internal/models"
+	"github.com/go-playground/form/v4"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type application struct {
@@ -18,6 +21,7 @@ type application struct {
 	Handler       http.Handler
 	snippets      *models.SnippetModel
 	templateCache map[string]*template.Template
+	formDecoder   *form.Decoder
 }
 
 func main() {
@@ -40,11 +44,14 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	formDecoder := form.NewDecoder()
+
 	app := &application{
 		infoLog:       infoLog,
 		errorLog:      errorLog,
 		snippets:      &models.SnippetModel{DB: db},
 		templateCache: templateCache,
+		formDecoder:   formDecoder,
 	}
 
 	srv := &http.Server{
