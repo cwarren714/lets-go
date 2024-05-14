@@ -13,8 +13,10 @@ import (
 
 // newTemplateData creates a templateData object and returns a pointer to it
 func (app *application) newTemplateData(r *http.Request) *templateData {
+	// popstring returns the value for the key and removes it from session data
 	return &templateData{
 		CurrentYear: time.Now().Year(),
+		Flash:       app.sessionManager.PopString(r.Context(), "flash"),
 	}
 }
 
