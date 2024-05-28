@@ -35,7 +35,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 
 	// glob returns a slice of all pages that match the pattern
-	pages, err := filepath.Glob("./ui/html/pages/*.tmpl")
+	pages, err := filepath.Glob("./ui/html/pages/*")
 	if err != nil {
 		return nil, err
 	}
